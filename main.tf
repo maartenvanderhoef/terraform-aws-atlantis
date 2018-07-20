@@ -21,23 +21,6 @@ resource "random_id" "webhook" {
 }
 
 ###################
-# Github webhook(s)
-###################
-module "github_repository_webhook" {
-  source = "./modules/github-repository-webhook"
-
-  create_github_repository_webhook = "${var.create_github_repository_webhook}"
-
-  github_token        = "${var.github_token}"
-  github_organization = "${var.github_organization}"
-
-  github_repo_names = "${var.github_repo_names}"
-
-  webhook_url    = "${local.atlantis_url_events}"
-  webhook_secret = "${random_id.webhook.hex}"
-}
-
-###################
 # ALB
 ###################
 module "alb" {
