@@ -43,6 +43,12 @@ variable "private_subnets" {
   default     = []
 }
 
+variable "alb_ingress_cidr_blocks" {
+  description = "A list of cidr blocks which are allowed access to the public ALB"
+  type        = "list"
+  default     = ["0.0.0.0/0"]
+}
+
 variable "certificate_arn" {
   description = "ARN of certificate issued by AWS ACM. If empty, a new ACM certificate will be created and validated using Route53 DNS"
   default     = ""
