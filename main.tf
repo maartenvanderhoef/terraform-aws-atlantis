@@ -1,8 +1,8 @@
 locals {
   # VPC - existing or new?
-  vpc_id             = "${var.vpc_id == "" ? module.vpc.vpc_id : var.vpc_id}"
-  private_subnet_ids = "${coalescelist(module.vpc.private_subnets, var.private_subnet_ids)}"
-  public_subnet_ids  = "${coalescelist(module.vpc.public_subnets, var.public_subnet_ids)}"
+  vpc_id             = "${var.vpc_id}"
+  private_subnet_ids = "${var.private_subnet_ids}"
+  public_subnet_ids  = "${var.public_subnet_ids}"
 
   # Atlantis
   atlantis_image      = "${var.atlantis_image == "" ? "runatlantis/atlantis:${var.atlantis_version}" : "${var.atlantis_image}" }"
@@ -35,28 +35,6 @@ module "github_repository_webhook" {
 
   webhook_url    = "${local.atlantis_url_events}"
   webhook_secret = "${random_id.webhook.hex}"
-}
-
-###################
-# VPC
-###################
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "v1.32.0"
-
-  create_vpc = "${var.vpc_id == ""}"
-
-  name = "${var.name}"
-
-  cidr            = "${var.cidr}"
-  azs             = "${var.azs}"
-  private_subnets = "${var.private_subnets}"
-  public_subnets  = "${var.public_subnets}"
-
-  enable_nat_gateway = true
-  single_nat_gateway = true
-
-  tags = "${local.tags}"
 }
 
 ###################
